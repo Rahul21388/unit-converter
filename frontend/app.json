@@ -13,7 +13,8 @@
     "updates": {
       "enabled": true,
       "checkAutomatically": "ON_LOAD",
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/88ac8352-bbee-4848-8a77-a763efc53a75"
     },
     "ios": {
       "supportsTablet": true
@@ -23,7 +24,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#F97316"
       },
-      "package": "com.rahulprakash.unitconverter"
+      "package": "com.rahulprakash.unitconverter",
+      "versionCode": 1
     },
     "web": {
       "bundler": "metro",
@@ -58,6 +60,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "88ac8352-bbee-4848-8a77-a763efc53a75"
+      }
     }
   }
 }

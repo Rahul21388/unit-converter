@@ -36,6 +36,9 @@ yarn-error.*
 # local env files
 .env*.local
 
+# EAS credentials
+google-services-key.json
+
 # typescript
 *.tsbuildinfo
 
