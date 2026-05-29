@@ -1,5 +1,5 @@
-// Tracks whether the user has unlocked "Remove Ads" (mock IAP).
-// Persisted via the project's AsyncStorage wrapper.
+// Tracks whether the user has purchased "Remove Ads".
+// Persisted via AsyncStorage.
 
 import { useCallback, useEffect, useState } from "react";
 import { storage } from "@/src/utils/storage";

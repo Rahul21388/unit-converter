@@ -7,7 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "unitconverter",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "runtimeVersion": {
       "policy": "appVersion"
     },
@@ -24,7 +23,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#F97316"
       },
-      "edgeToEdgeEnabled": true
+      "package": "com.rahulprakash.unitconverter"
     },
     "web": {
       "bundler": "metro",
@@ -34,9 +33,21 @@
     "plugins": [
       "expo-router",
       [
+        "react-native-iap",
+        {
+          "paymentProvider": "Play Store"
+        }
+      ],
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-9942161594730475~8135589002"
+        }
+      ],
+      [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/splash-image.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#F97316"

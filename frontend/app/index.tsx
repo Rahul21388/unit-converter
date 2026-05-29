@@ -1,7 +1,7 @@
 // Home Screen — 2-column grid of 8 colorful unit conversion categories.
 // Tapping a card navigates to /converter?category=<key>.
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Pressable,
   ScrollView,
@@ -20,11 +20,34 @@ import { CATEGORIES, categoryColors } from "@/src/constants/units";
 import AdBanner from "@/src/components/AdBanner";
 import { useAdsRemoved } from "@/src/hooks/useAdsRemoved";
 
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const WEEKDAYS = ["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
+
+function formatDate(d: Date) {
+  const dd = String(d.getDate()).padStart(2, "0");
+  const month = MONTHS[d.getMonth()];
+  const yyyy = d.getFullYear();
+  const weekday = WEEKDAYS[d.getDay()];
+  return `${dd} - ${month} - ${yyyy}  ${weekday}`;
+}
+
+function formatTime(d: Date) {
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mm = String(d.getMinutes()).padStart(2, "0");
+  return `${hh}:${mm}`;
+}
+
 export default function HomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const isDark = useColorScheme() === "dark";
   const { adsRemoved } = useAdsRemoved();
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(timer);
+  }, []);
 
   const bg = isDark ? "#09090B" : "#FAFAFA";
   const textPrimary = isDark ? "#FAFAFA" : "#0A0A0A";
@@ -35,10 +58,13 @@ export default function HomeScreen() {
       <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
         <View style={{ flex: 1 }}>
           <Text style={[styles.brand, { color: textSecondary }]}>
-            UNIT CONVERTER
+            {formatDate(now)}
+          </Text>
+          <Text style={[styles.time, { color: textSecondary }]}>
+            {formatTime(now)}
           </Text>
           <Text style={[styles.title, { color: textPrimary }]}>
-            Convert anything,{"\n"}instantly.
+            Convert Anything
           </Text>
         </View>
         <TouchableOpacity
@@ -120,16 +146,21 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   brand: {
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: "700",
-    letterSpacing: 2,
+    letterSpacing: 1,
+    marginBottom: 2,
+  },
+  time: {
+    fontSize: 28,
+    fontWeight: "700",
+    letterSpacing: 1,
     marginBottom: 8,
   },
   title: {
-    fontSize: 32,
-    fontWeight: "800",
-    lineHeight: 38,
-    letterSpacing: -1,
+    fontSize: 16,
+    fontWeight: "600",
+    letterSpacing: 0.5,
   },
   iconBtn: {
     width: 48,

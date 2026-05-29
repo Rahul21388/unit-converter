@@ -1,9 +1,8 @@
 // Converter Screen — From/To unit pickers, numeric keyboard input, prominent
-// result, swap button, and a mock interstitial every 5th conversion.
+// result, and swap button.
 
 import React, { useMemo, useRef, useState } from "react";
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -38,8 +37,6 @@ export default function ConverterScreen() {
     [categoryKey],
   );
 
-  // Track count of conversions for mock interstitial cadence.
-  const conversionCount = useRef(0);
   const previousValue = useRef<string>("");
 
   const [fromKey, setFromKey] = useState<string>(
@@ -82,20 +79,6 @@ export default function ConverterScreen() {
     const v = parseFloat(cleaned);
     if (!isNaN(v) && cleaned !== previousValue.current) {
       previousValue.current = cleaned;
-      conversionCount.current += 1;
-      maybeShowInterstitial();
-    }
-  };
-
-  const maybeShowInterstitial = () => {
-    if (adsRemoved) return;
-    if (conversionCount.current > 0 && conversionCount.current % 5 === 0) {
-      // Mock interstitial — no real SDK yet.
-      Alert.alert(
-        "Ad",
-        "Interstitial Ad (placeholder)\n\nReal AdMob will be wired in production.",
-        [{ text: "Continue" }],
-      );
     }
   };
 

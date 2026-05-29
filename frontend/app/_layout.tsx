@@ -3,9 +3,11 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+import mobileAds from "react-native-google-mobile-ads";
 
 import { useIconFonts } from "@/src/hooks/use-icon-fonts";
 import { useOTAUpdate } from "@/src/hooks/useOTAUpdate";
+import { useThemePreference } from "@/src/hooks/useThemePreference";
 
 // Keep the native splash visible from cold start until icon fonts register.
 // Required because @expo/vector-icons' componentDidMount fallback fires
@@ -16,6 +18,11 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [loaded, error] = useIconFonts();
   useOTAUpdate();
+  useThemePreference();
+
+  useEffect(() => {
+    mobileAds().initialize();
+  }, []);
 
   useEffect(() => {
     if (loaded || error) {
