@@ -1,0 +1,98 @@
+{
+  "app_identity": {
+    "domain": "Mobile Utility App (React Native Expo)",
+    "theme": "Auto Light/Dark Mode",
+    "archetype": "Archetype 3 (Pastel & Soft) infused with Neo-Brutalist utility (Tactile, sharp contrasts)",
+    "mood": "Playful, highly tactile, functional, reducing the 'boring math' anxiety of standard utilities."
+  },
+  "typography": {
+    "primary_font": "Outfit",
+    "secondary_font": "Manrope",
+    "rules": {
+      "h1_numbers": "Massive scale (e.g., 48px to 64px), tracking-tighter, font-black. Used for conversion inputs/outputs.",
+      "h2_headers": "30px, tracking-tight, font-bold. Used for category titles.",
+      "h3_cards": "20px, font-bold. Used for grid items.",
+      "body": "16px, font-medium.",
+      "labels": "14px, tracking-[0.1em], uppercase, font-bold. Used for 'From' / 'To' / Dropdowns."
+    }
+  },
+  "color_palette": {
+    "light_mode": {
+      "background": "#FAFAFA",
+      "surface": "#FFFFFF",
+      "text_primary": "#0A0A0A",
+      "text_secondary": "#52525B",
+      "border": "#0A0A0A",
+      "shadow": "#0A0A0A"
+    },
+    "dark_mode": {
+      "background": "#09090B",
+      "surface": "#18181B",
+      "text_primary": "#FAFAFA",
+      "text_secondary": "#A1A1AA",
+      "border": "#3F3F46",
+      "shadow": "transparent"
+    },
+    "category_cards": {
+      "Length": { "bg": "#A7F3D0", "text": "#064E3B", "icon": "#059669" },
+      "Weight": { "bg": "#DDD6FE", "text": "#3730A3", "icon": "#4F46E5" },
+      "Temperature": { "bg": "#FECACA", "text": "#7F1D1D", "icon": "#DC2626" },
+      "Area": { "bg": "#FDE047", "text": "#713F12", "icon": "#CA8A04" },
+      "Volume": { "bg": "#BAE6FD", "text": "#0C4A6E", "icon": "#0284C7" },
+      "Speed": { "bg": "#FBCFE8", "text": "#831843", "icon": "#DB2777" },
+      "Time": { "bg": "#D9F99D", "text": "#3F6212", "icon": "#65A30D" },
+      "Data": { "bg": "#E5E7EB", "text": "#1F2937", "icon": "#4B5563" }
+    }
+  },
+  "spacing_and_layout": {
+    "screen_padding": "24px",
+    "grid_gap": "16px",
+    "border_radius": {
+      "card": "20px",
+      "button": "999px",
+      "input": "24px",
+      "dropdown": "12px"
+    },
+    "touch_targets": "Minimum 48x48px for all interactive elements to ensure mobile accessibility."
+  },
+  "screens": {
+    "home_screen": {
+      "layout": "2-column grid.",
+      "card_style_light": "Neo-brutalist: 2px solid #0A0A0A border, 4px solid #0A0A0A drop shadow. Aspect ratio 1:1. Icon top-left, Text bottom-left.",
+      "card_style_dark": "Flat: 1px solid rgba(255,255,255,0.1) border, no drop shadow. Text color inverted to white/light gray for readability.",
+      "ad_banner": "Fixed at bottom, 50px height. Placeholder UI: Gray block with 'AdMob Banner' text."
+    },
+    "converter_screen": {
+      "layout": "Vertical split flow taking up full available height minus header and ad banner.",
+      "header": "Dynamic background color matching the selected category. Contains Back button and Category Name.",
+      "conversion_zone": "Two massive blocks (From & To).",
+      "inputs": "Massive borderless numeric inputs. Center aligned. Do NOT use default text input borders.",
+      "dropdowns": "Pill-shaped selectors placed directly above or below the numeric inputs.",
+      "swap_button": "Circular Floating Action Button (FAB) perfectly overlapping the seam between the 'From' and 'To' zones. Prominent drop shadow.",
+      "ad_banner": "Fixed at bottom."
+    },
+    "settings_screen": {
+      "layout": "Simple list layout.",
+      "remove_ads_cta": "Massive, screen-wide button. Uses a Sunset Gradient (Orange #F97316 to Pink #EC4899). Bold white text 'Remove Ads - ₹99'. (No purple/teal defaults)."
+    }
+  },
+  "motion_and_interactions": {
+    "card_press": "Scale down to 0.95 opacity 0.8 on active press.",
+    "swap_animation": "Rotate 180 degrees with spring physics when tapped (if using Reanimated).",
+    "page_transition": "Standard React Navigation Native slide transitions."
+  },
+  "accessibility": {
+    "data_testids": "MANDATORY on all touchables, text inputs, dropdowns, and text displays. Format: `kebab-case-role`.",
+    "contrast": "Ensure dark mode inverted colors meet 4.5:1 ratio.",
+    "haptics": "Trigger light haptic feedback (using expo-haptics) on every number input press, grid card press, and swap button press."
+  },
+  "instructions_to_main_agent": [
+    "This is a React Native Expo app. Use <View>, <Text>, <TouchableOpacity>, <TextInput>.",
+    "Use StyleSheet for styling. Do not use Tailwind/HTML classes unless NativeWind is installed. Translate the hex and pixel values provided here into standard RN styles.",
+    "Use 'lucide-react-native' for icons (ensure the package is added).",
+    "Use 'react-native-safe-area-context' to pad the top/bottom of screens.",
+    "Do NOT use 'Inter' or generic fonts. Try to load 'Outfit' and 'Manrope' via '@expo-google-fonts'. If unavailable, fallback to system sans-serif but maintain the massive font size scale.",
+    "AdMob integration is a placeholder. Just build the UI frame for it.",
+    "Ensure the 'Remove Ads' button avoids standard purple/teal colors as per E1 constraints."
+  ]
+}
