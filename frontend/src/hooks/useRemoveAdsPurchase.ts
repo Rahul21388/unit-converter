@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   endConnection,
+  fetchProducts,
   finishTransaction,
-  getProducts,
   initConnection,
   purchaseErrorListener,
   purchaseUpdatedListener,
   requestPurchase,
-  type ProductPurchase,
+  type Purchase,
   type PurchaseError,
   type Product,
 } from "react-native-iap";
@@ -32,12 +32,16 @@ export function useRemoveAdsPurchase() {
         await initConnection();
         setConnected(true);
 
-        const products = await getProducts({ skus: [REMOVE_ADS_SKU] });
-        if (products.length > 0) setProduct(products[0]);
+        // v15 API: fetchProducts replaces getProducts
+        const products = await fetchProducts({
+          skus: [REMOVE_ADS_SKU],
+          type: "in-app",
+        });
+        if (products && products.length > 0) setProduct(products[0] as Product);
 
         purchaseUpdated = purchaseUpdatedListener(
-          async (purchase: ProductPurchase) => {
-            if (purchase.transactionReceipt) {
+          async (purchase: Purchase) => {
+            if (purchase.purchaseState === "purchased") {
               await finishTransaction({ purchase, isConsumable: false });
               await removeAds();
             }
@@ -72,7 +76,13 @@ export function useRemoveAdsPurchase() {
     try {
       setPurchasing(true);
       setError(null);
-      await requestPurchase({ skus: [REMOVE_ADS_SKU] });
+      // v15 API: nested request structure required
+      await requestPurchase({
+        type: "in-app",
+        request: {
+          google: { skus: [REMOVE_ADS_SKU] },
+        },
+      });
     } catch {
       setPurchasing(false);
     }
@@ -83,15 +93,18 @@ export function useRemoveAdsPurchase() {
     try {
       setRestoring(true);
       setError(null);
-      // Re-request the non-consumable — Play Store returns the existing
-      // purchase silently if the user already owns it.
-      await requestPurchase({ skus: [REMOVE_ADS_SKU] });
+      await requestPurchase({
+        type: "in-app",
+        request: {
+          google: { skus: [REMOVE_ADS_SKU] },
+        },
+      });
     } catch {
       setRestoring(false);
     }
   }, [connected]);
 
-  const price = product?.localizedPrice ?? "₹99";
+  const price = (product as any)?.displayPrice ?? "₹99";
 
   return {
     adsRemoved,
