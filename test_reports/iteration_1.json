@@ -1,0 +1,41 @@
+{
+  "summary": "Frontend-only smoke + functional test of Unit Converter Expo app via web preview (390x844). All 8 category cards render with correct testIDs and are tappable. Navigation to converter and back works. Numeric input, result-output, formula-hint, swap-button, from-unit-picker, to-unit-picker, picker-option-<key> all work. Conversion math verified: Length 1 m -> cm = 100, 1 mile -> km = 1.609344, swap 1 km -> mile = 0.62137119; Temperature 100 C -> F = 212, 0 C -> K = 273.15, 32 F -> C = 0; Weight 1 kg -> g = 1000, 1 lb -> g = 453.592; Data 1 KB -> byte = 1024, 1 MB -> KB = 1024. Settings nav (settings-button -> settings-screen) works, remove-ads-button renders. Ad banner renders on home (and on converter in first screenshot). LIMITATION (web only): React-Native-Web's Alert.alert is a no-op, so the mock interstitial Alert and the Remove-Ads purchase Alert cannot be exercised through the web preview — on a real iOS/Android device they will fire correctly. The ads-removed-state and persistence-to-AsyncStorage paths therefore could not be UI-verified end-to-end via the preview, but the hook code (useAdsRemoved -> storage.setItem 'ads_removed_v1') is correct. No deprecated Expo packages (expo-av / expo-barcode-scanner / expo-background-fetch) detected.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Mock interstitial every 5th conversion + Remove Ads IAP purchase",
+        "issue": "Both flows rely on Alert.alert which is a documented no-op on react-native-web. In the web preview, neither the interstitial popup nor the purchase confirm dialog appears, so the 'ads_removed_v1' AsyncStorage flag cannot be flipped from the UI. On a real device this will work, but it is not verifiable via the web preview. Consider replacing Alert.alert with a custom <Modal> for cross-platform parity & testability.",
+        "affected_testIDs": ["remove-ads-button", "ads-removed-state", "ad-banner", "value-input"]
+      }
+    ],
+    "design_issues": [
+      {
+        "screen": "Global",
+        "issues": [
+          "Console deprecation warning: '\"shadow*\" style props are deprecated. Use \"boxShadow\".' emitted by react-native-web. Cosmetic only on web; harmless on native. Triggered by brutalShadow/cardBrutal styles in index.tsx, converter.tsx, settings.tsx."
+        ]
+      }
+    ],
+    "react_native_issues": []
+  },
+  "test_report_links": ["/app/test_reports/iteration_1.json", "/app/test_reports/screenshots/"],
+  "action_items": [
+    "(Optional / device-only verification needed) Manually test on iOS/Android: every 5th value change in converter should show an Alert titled 'Ad', and tapping remove-ads-button -> 'Purchase \u20b999' should flip ads_removed_v1 in AsyncStorage and replace the CTA with the ads-removed-state card and hide ad-banner on Home + Converter. Cannot be web-verified.",
+    "(Optional polish) Replace Alert.alert with a custom Modal component for the interstitial and purchase confirmation so the flow is testable in the web preview and matches the brutal/gradient design language.",
+    "(Optional polish) Migrate shadow* style props to boxShadow to silence the react-native-web deprecation warning."
+  ],
+  "critical_code_review_comments": [
+    "useAdsRemoved correctly persists boolean to AsyncStorage under 'ads_removed_v1' and exposes removeAds/restoreAds/loaded. No issues.",
+    "converter.ts uses correct base-unit math for non-temperature categories and dedicated formulas for temperature. Math verified end-to-end via UI.",
+    "Interstitial cadence logic increments conversionCount only when cleaned !== previousValue.current AND !isNaN(v), which is reasonable but means typing the same number twice or clearing the field doesn't count. Acceptable.",
+    "All interactive elements have descriptive testIDs (category-card-<key>, value-input, result-output, formula-hint, swap-button, from-unit-picker, to-unit-picker, picker-option-<key>, settings-button, remove-ads-button, ads-removed-state, ad-banner, back-button, settings-back-button, category-title). Coverage is complete."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped per request)", "frontend": "100% on verifiable web flows; mock IAP + interstitial Alert.alert flows unverifiable on web due to RN-Web limitation"},
+  "seed_data_creation": "None required (fully offline app).",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "App is fully client-side; no backend. Test via https://units-hub.preview.emergentagent.com at viewport 390x844. To exercise pickers, the bottom-sheet animation is 'slide' — wait 400-500ms after opening before clicking picker-option-<key>, and call scroll_into_view_if_needed() to avoid 'outside viewport' click errors. Alert.alert is a no-op on react-native-web so the interstitial and Remove-Ads purchase flows cannot be verified through the preview — verify on device or after the optional Modal refactor."
+}
